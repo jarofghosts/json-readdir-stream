@@ -10,14 +10,14 @@ test('streams keys and values of everything by default', function(t) {
     , expected
 
   expected = [
-      {key: 'a', value: '{"lol":true}'}
-    , {key: 'b', value: '{"lol":true}'}
-    , {key: 'bar', value: '{"lol":true}'}
-    , {key: 'c', value: '{"lol":true}'}
-    , {key: 'd', value: '{"lol":true}'}
-    , {key: 'e', value: '{"lol":true}'}
-    , {key: 'f', value: '{"lol":true}'}
-    , {key: 'h', value: '{"lol":true}'}
+      {key: 'a', value: {lol: true}}
+    , {key: 'b', value: {lol: true}}
+    , {key: 'bar', value: {lol: true}}
+    , {key: 'c', value: {lol: true}}
+    , {key: 'd', value: {lol: true}}
+    , {key: 'e', value: {lol: true}}
+    , {key: 'f', value: {lol: true}}
+    , {key: 'h', value: {lol: true}}
   ]
 
   stream.on('data', function(data) {
@@ -37,14 +37,14 @@ test('streams keys and values in reverse if specified', function(t) {
     , expected
 
   expected = [
-      {key: 'a', value: '{"lol":true}'}
-    , {key: 'b', value: '{"lol":true}'}
-    , {key: 'bar', value: '{"lol":true}'}
-    , {key: 'c', value: '{"lol":true}'}
-    , {key: 'd', value: '{"lol":true}'}
-    , {key: 'e', value: '{"lol":true}'}
-    , {key: 'f', value: '{"lol":true}'}
-    , {key: 'h', value: '{"lol":true}'}
+      {key: 'a', value: {lol: true}}
+    , {key: 'b', value: {lol: true}}
+    , {key: 'bar', value: {lol: true}}
+    , {key: 'c', value: {lol: true}}
+    , {key: 'd', value: {lol: true}}
+    , {key: 'e', value: {lol: true}}
+    , {key: 'f', value: {lol: true}}
+    , {key: 'h', value: {lol: true}}
   ].reverse()
 
   stream.on('data', function(data) {
@@ -82,14 +82,14 @@ test('streams just values if specified', function(t) {
     , expected
 
   expected = [
-      '{"lol":true}'
-    , '{"lol":true}'
-    , '{"lol":true}'
-    , '{"lol":true}'
-    , '{"lol":true}'
-    , '{"lol":true}'
-    , '{"lol":true}'
-    , '{"lol":true}'
+      {lol: true}
+    , {lol: true}
+    , {lol: true}
+    , {lol: true}
+    , {lol: true}
+    , {lol: true}
+    , {lol: true}
+    , {lol: true}
   ]
 
   stream.on('data', function(data) {
@@ -109,12 +109,12 @@ test('respects start value', function(t) {
     , expected
 
   expected = [
-      {key: 'bar', value: '{"lol":true}'}
-    , {key: 'c', value: '{"lol":true}'}
-    , {key: 'd', value: '{"lol":true}'}
-    , {key: 'e', value: '{"lol":true}'}
-    , {key: 'f', value: '{"lol":true}'}
-    , {key: 'h', value: '{"lol":true}'}
+      {key: 'bar', value: {lol: true}}
+    , {key: 'c', value: {lol: true}}
+    , {key: 'd', value: {lol: true}}
+    , {key: 'e', value: {lol: true}}
+    , {key: 'f', value: {lol: true}}
+    , {key: 'h', value: {lol: true}}
   ]
 
   stream.on('data', function(data) {
@@ -134,12 +134,12 @@ test('respects start value even if no key matches', function(t) {
     , expected
 
   expected = [
-      {key: 'bar', value: '{"lol":true}'}
-    , {key: 'c', value: '{"lol":true}'}
-    , {key: 'd', value: '{"lol":true}'}
-    , {key: 'e', value: '{"lol":true}'}
-    , {key: 'f', value: '{"lol":true}'}
-    , {key: 'h', value: '{"lol":true}'}
+      {key: 'bar', value: {lol: true}}
+    , {key: 'c', value: {lol: true}}
+    , {key: 'd', value: {lol: true}}
+    , {key: 'e', value: {lol: true}}
+    , {key: 'f', value: {lol: true}}
+    , {key: 'h', value: {lol: true}}
   ]
 
   stream.on('data', function(data) {
@@ -159,11 +159,11 @@ test('respects end value', function(t) {
     , expected
 
   expected = [
-      {key: 'a', value: '{"lol":true}'}
-    , {key: 'b', value: '{"lol":true}'}
-    , {key: 'bar', value: '{"lol":true}'}
-    , {key: 'c', value: '{"lol":true}'}
-    , {key: 'd', value: '{"lol":true}'}
+      {key: 'a', value: {lol: true}}
+    , {key: 'b', value: {lol: true}}
+    , {key: 'bar', value: {lol: true}}
+    , {key: 'c', value: {lol: true}}
+    , {key: 'd', value: {lol: true}}
   ]
 
   stream.on('data', function(data) {
@@ -183,13 +183,13 @@ test('respects end value even if no key matches', function(t) {
     , expected
 
   expected = [
-      {key: 'a', value: '{"lol":true}'}
-    , {key: 'b', value: '{"lol":true}'}
-    , {key: 'bar', value: '{"lol":true}'}
-    , {key: 'c', value: '{"lol":true}'}
-    , {key: 'd', value: '{"lol":true}'}
-    , {key: 'e', value: '{"lol":true}'}
-    , {key: 'f', value: '{"lol":true}'}
+      {key: 'a', value: {lol: true}}
+    , {key: 'b', value: {lol: true}}
+    , {key: 'bar', value: {lol: true}}
+    , {key: 'c', value: {lol: true}}
+    , {key: 'd', value: {lol: true}}
+    , {key: 'e', value: {lol: true}}
+    , {key: 'f', value: {lol: true}}
   ]
 
   stream.on('data', function(data) {

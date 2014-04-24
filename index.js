@@ -53,7 +53,7 @@ function json_stream(dir, _options, _extension) {
           , value
 
         try{
-          value = JSON.stringify(JSON.parse('' + data))
+          value = JSON.parse('' + data)
         } catch(e) {
           next()
         }
