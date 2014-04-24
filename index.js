@@ -9,6 +9,7 @@ function json_stream(dir, _options, _extension) {
   var extension = _extension || '.json'
     , options = _options || {}
     , stream = through()
+    , count = 0
     , read
 
   if(options.limit === 0) return stream.queue(null)
@@ -22,10 +23,15 @@ function json_stream(dir, _options, _extension) {
   return stream
 
   function parse_files(err, files) {
-    files = files.sort().slice(0, options.limit)
-    if(options.start || options.end) files = files.filter(filter_start_end)
+    files = files.sort()
 
     if(options.reverse) files = files.reverse()
+
+    if(options.start && options.end && options.end < options.start) {
+      options.end = [options.start, options.start = options.end][0]
+    }
+
+    if(options.start || options.end) files = files.filter(filter_start_end)
 
     next()
 
@@ -40,6 +46,8 @@ function json_stream(dir, _options, _extension) {
 
       function stream_key(err, stats) {
         if(err || !stats.isFile()) return next()
+
+        if(options.limit && options.limit < ++count) return end()
 
         stream.queue(just_name(filename))
 
@@ -58,6 +66,8 @@ function json_stream(dir, _options, _extension) {
           next()
         }
 
+        if(options.limit && options.limit < ++count) return end()
+
         if(options.keys === false) {
           result = value
         } else {
@@ -74,10 +84,14 @@ function json_stream(dir, _options, _extension) {
     }
 
     function next() {
-      if(!files.length) return stream.queue(null)
+      if(!files.length) return end() 
 
       stream_file(files.shift())
     }
+  }
+
+  function end() {
+    stream.queue(null)
   }
 
   function filter_start_end(el) {

@@ -200,3 +200,128 @@ test('respects end value even if no key matches', function(t) {
     t.deepEqual(results, expected)
   })
 })
+
+test('reverse and start+end play nice', function(t) {
+  t.plan(1)
+
+  var stream_options = {start: 'bar', end: 'g', reverse: true}
+
+  var stream = read_stream(__dirname + '/json-dir', stream_options)
+    , results = []
+    , expected
+
+  expected = [
+      {key: 'bar', value: {lol: true}}
+    , {key: 'c', value: {lol: true}}
+    , {key: 'd', value: {lol: true}}
+    , {key: 'e', value: {lol: true}}
+    , {key: 'f', value: {lol: true}}
+  ].reverse()
+
+  stream.on('data', function(data) {
+    results.push(data)
+  })
+
+  stream.on('end', function() {
+    t.deepEqual(results, expected)
+  })
+})
+
+test('start+end works', function(t) {
+  t.plan(1)
+
+  var stream_options = {start: 'bar', end: 'g'}
+
+  var stream = read_stream(__dirname + '/json-dir', stream_options)
+    , results = []
+    , expected
+
+  expected = [
+      {key: 'bar', value: {lol: true}}
+    , {key: 'c', value: {lol: true}}
+    , {key: 'd', value: {lol: true}}
+    , {key: 'e', value: {lol: true}}
+    , {key: 'f', value: {lol: true}}
+  ]
+
+  stream.on('data', function(data) {
+    results.push(data)
+  })
+
+  stream.on('end', function() {
+    t.deepEqual(results, expected)
+  })
+})
+
+test('start and end values are sorted logically', function(t) {
+  t.plan(1)
+
+  var stream_options = {start: 'g', end: 'bar'}
+
+  var stream = read_stream(__dirname + '/json-dir', stream_options)
+    , results = []
+    , expected
+
+  expected = [
+      {key: 'bar', value: {lol: true}}
+    , {key: 'c', value: {lol: true}}
+    , {key: 'd', value: {lol: true}}
+    , {key: 'e', value: {lol: true}}
+    , {key: 'f', value: {lol: true}}
+  ]
+
+  stream.on('data', function(data) {
+    results.push(data)
+  })
+
+  stream.on('end', function() {
+    t.deepEqual(results, expected)
+  })
+})
+test('limit works', function(t) {
+  t.plan(1)
+
+  var stream = read_stream(__dirname + '/json-dir', {limit: 3, start: 'b'})
+    , results = []
+    , expected
+
+  expected = [
+      {key: 'b', value: {lol: true}}
+    , {key: 'bar', value: {lol: true}}
+    , {key: 'c', value: {lol: true}}
+  ]
+
+  stream.on('data', function(data) {
+    results.push(data)
+  })
+
+  stream.on('end', function() {
+    t.deepEqual(results, expected)
+  })
+})
+
+test('-1 limit works', function(t) {
+  t.plan(1)
+
+  var stream = read_stream(__dirname + '/json-dir', {limit: -1, start: 'b'})
+    , results = []
+    , expected
+
+  expected = [
+      {key: 'b', value: {lol: true}}
+    , {key: 'bar', value: {lol: true}}
+    , {key: 'c', value: {lol: true}}
+    , {key: 'd', value: {lol: true}}
+    , {key: 'e', value: {lol: true}}
+    , {key: 'f', value: {lol: true}}
+    , {key: 'h', value: {lol: true}}
+  ]
+
+  stream.on('data', function(data) {
+    results.push(data)
+  })
+
+  stream.on('end', function() {
+    t.deepEqual(results, expected)
+  })
+})
