@@ -14,7 +14,7 @@ function json_stream(dir, _options, _extension) {
 
   if(options.limit === 0) return stream.queue(null)
 
-  if(options.limit < 0) delete options.limit
+  if(options.limit < 0) options.limit = 0
 
   dir = path.normalize(dir)
 
