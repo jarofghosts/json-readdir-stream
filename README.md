@@ -15,7 +15,7 @@ var jrs = require('json-readdir-stream')
 var stream = jrs(__dirname + '/json-files', {
     start: '' // start at the beginning
   , end: '' // ..end at the end
-  , reverse: false // stream in reverse-alphabetical order
+  , reverse: false // stream in alphabetical order
   , keys: true // include keys in stream
   , values: true // include values in stream
   , limit: -1 // limit results to value, -1 is no limit
