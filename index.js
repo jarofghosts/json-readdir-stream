@@ -13,7 +13,9 @@ function json_stream(dir, _options, _extension) {
 
   if(options.limit === 0) return stream.queue(null)
 
-  if(options.limit === -1) options.limit = 0
+  if(options.limit < 0) options.limit = 0
+
+  dir = path.normalize(dir)
 
   fs.readdir(dir, parse_files)
 
@@ -23,10 +25,9 @@ function json_stream(dir, _options, _extension) {
     files = files.sort().slice(0, options.limit)
     if(options.start || options.end) files = files.filter(filter_start_end)
 
-    if(!files.length) return stream.queue(null)
     if(options.reverse) files = files.reverse()
 
-    stream_file(files.shift())
+    next()
 
     function stream_file(filename) {
       if(path.extname(filename) !== '.json') return next()
