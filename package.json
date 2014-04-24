@@ -1,0 +1,38 @@
+{
+  "name": "json-readdir-stream",
+  "version": "0.0.0",
+  "description": "levelup createReadStream for a directory of json files",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "tape test/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jarofghosts/json-readdir-stream.git"
+  },
+  "keywords": [
+    "levelup",
+    "json",
+    "fs",
+    "flat",
+    "file",
+    "read",
+    "stream",
+    "readstream"
+  ],
+  "author": "jesse keane <me@jessekeane.me>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jarofghosts/json-readdir-stream/issues"
+  },
+  "homepage": "https://github.com/jarofghosts/json-readdir-stream",
+  "dependencies": {
+    "through": "^2.3.4"
+  },
+  "devDependencies": {
+    "tape": "^2.12.3"
+  }
+}
