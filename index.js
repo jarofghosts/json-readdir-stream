@@ -22,10 +22,11 @@ function json_stream(dir, _options, _extension) {
   return stream
 
   function parse_files(err, files) {
-    files = files.sort().slice(0, options.limit)
-    if(options.start || options.end) files = files.filter(filter_start_end)
-
     if(options.reverse) files = files.reverse()
+
+    files = files.sort().slice(0, options.limit)
+
+    if(options.start || options.end) files = files.filter(filter_start_end)
 
     next()
 
