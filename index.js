@@ -27,6 +27,10 @@ function json_stream(dir, _options, _extension) {
 
     if(options.reverse) files = files.reverse()
 
+    if(options.start && options.end && options.end < options.start) {
+      options.end = [options.start, options.start = options.end][0]
+    }
+
     if(options.start || options.end) files = files.filter(filter_start_end)
 
     next()

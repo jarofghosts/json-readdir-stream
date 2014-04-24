@@ -227,6 +227,57 @@ test('reverse and start+end play nice', function(t) {
   })
 })
 
+test('start+end works', function(t) {
+  t.plan(1)
+
+  var stream_options = {start: 'bar', end: 'g'}
+
+  var stream = read_stream(__dirname + '/json-dir', stream_options)
+    , results = []
+    , expected
+
+  expected = [
+      {key: 'bar', value: {lol: true}}
+    , {key: 'c', value: {lol: true}}
+    , {key: 'd', value: {lol: true}}
+    , {key: 'e', value: {lol: true}}
+    , {key: 'f', value: {lol: true}}
+  ]
+
+  stream.on('data', function(data) {
+    results.push(data)
+  })
+
+  stream.on('end', function() {
+    t.deepEqual(results, expected)
+  })
+})
+
+test('start and end values are sorted logically', function(t) {
+  t.plan(1)
+
+  var stream_options = {start: 'g', end: 'bar'}
+
+  var stream = read_stream(__dirname + '/json-dir', stream_options)
+    , results = []
+    , expected
+
+  expected = [
+      {key: 'bar', value: {lol: true}}
+    , {key: 'c', value: {lol: true}}
+    , {key: 'd', value: {lol: true}}
+    , {key: 'e', value: {lol: true}}
+    , {key: 'f', value: {lol: true}}
+  ]
+
+  stream.on('data', function(data) {
+    results.push(data)
+  })
+
+  stream.on('end', function() {
+    t.deepEqual(results, expected)
+  })
+})
 test('limit works', function(t) {
   t.plan(1)
 
