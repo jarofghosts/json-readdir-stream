@@ -200,3 +200,50 @@ test('respects end value even if no key matches', function(t) {
     t.deepEqual(results, expected)
   })
 })
+
+test('limit works', function(t) {
+  t.plan(1)
+
+  var stream = read_stream(__dirname + '/json-dir', {limit: 3, start: 'b'})
+    , results = []
+    , expected
+
+  expected = [
+      {key: 'b', value: {lol: true}}
+    , {key: 'bar', value: {lol: true}}
+    , {key: 'c', value: {lol: true}}
+  ]
+
+  stream.on('data', function(data) {
+    results.push(data)
+  })
+
+  stream.on('end', function() {
+    t.deepEqual(results, expected)
+  })
+})
+
+test('-1 limit works', function(t) {
+  t.plan(1)
+
+  var stream = read_stream(__dirname + '/json-dir', {limit: -1, start: 'b'})
+    , results = []
+    , expected
+
+  expected = [
+      {key: 'b', value: {lol: true}}
+    , {key: 'bar', value: {lol: true}}
+    , {key: 'c', value: {lol: true}}
+    , {key: 'd', value: {lol: true}}
+    , {key: 'e', value: {lol: true}}
+    , {key: 'f', value: {lol: true}}
+  ]
+
+  stream.on('data', function(data) {
+    results.push(data)
+  })
+
+  stream.on('end', function() {
+    t.deepEqual(results, expected)
+  })
+})
