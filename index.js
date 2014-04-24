@@ -80,10 +80,14 @@ function json_stream(dir, _options, _extension) {
     }
 
     function next() {
-      if(!files.length) return stream.queue(null)
+      if(!files.length) return end() 
 
       stream_file(files.shift())
     }
+  }
+
+  function end() {
+    stream.queue(null)
   }
 
   function filter_start_end(el) {
