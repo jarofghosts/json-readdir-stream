@@ -1,6 +1,6 @@
 {
   "name": "json-readdir-stream",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "levelup createReadStream for a directory of json files",
   "main": "index.js",
   "directories": {
