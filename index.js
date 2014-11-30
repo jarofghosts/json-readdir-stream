@@ -3,9 +3,9 @@ var path = require('path')
 
 var through = require('through')
 
-module.exports = json_stream
+module.exports = jsonStream
 
-function json_stream(dir, _options, _extension) {
+function jsonStream(dir, _options, _extension) {
   var extension = _extension || '.json'
     , options = _options || {}
     , stream = through()
@@ -18,11 +18,11 @@ function json_stream(dir, _options, _extension) {
 
   dir = path.normalize(dir)
 
-  fs.readdir(dir, parse_files)
+  fs.readdir(dir, parseFiles)
 
   return stream
 
-  function parse_files(err, files) {
+  function parseFiles(err, files) {
     files = files.sort()
 
     if(options.reverse) files = files.reverse()
@@ -31,30 +31,30 @@ function json_stream(dir, _options, _extension) {
       options.end = [options.start, options.start = options.end][0]
     }
 
-    if(options.start || options.end) files = files.filter(filter_start_end)
+    if(options.start || options.end) files = files.filter(filterStartEnd)
 
     next()
 
-    function stream_file(filename) {
+    function streamFile(filename) {
       if(path.extname(filename) !== '.json') return next()
 
       if(options.values === false) {
-        return fs.stat(path.join(dir, filename), stream_key)
+        return fs.stat(path.join(dir, filename), streamKey)
       }
 
-      fs.readFile(path.join(dir, filename), stream_key_value)
+      fs.readFile(path.join(dir, filename), streamKeyValue)
 
-      function stream_key(err, stats) {
+      function streamKey(err, stats) {
         if(err || !stats.isFile()) return next()
 
         if(options.limit && options.limit < ++count) return end()
 
-        stream.queue(just_name(filename))
+        stream.queue(justName(filename))
 
         next()
       }
 
-      function stream_key_value(err, data) {
+      function streamKeyValue(err, data) {
         if(err) return next()
 
         var result
@@ -72,7 +72,7 @@ function json_stream(dir, _options, _extension) {
           result = value
         } else {
           result = {
-              key: just_name(filename)
+              key: justName(filename)
             , value: value
           }
         }
@@ -84,9 +84,9 @@ function json_stream(dir, _options, _extension) {
     }
 
     function next() {
-      if(!files.length) return end() 
+      if(!files.length) return end()
 
-      stream_file(files.shift())
+      streamFile(files.shift())
     }
   }
 
@@ -94,7 +94,7 @@ function json_stream(dir, _options, _extension) {
     stream.queue(null)
   }
 
-  function filter_start_end(el) {
+  function filterStartEnd(el) {
     var compare = path.basename(el, extension)
 
     if(options.start && options.start > compare) return false
@@ -104,6 +104,6 @@ function json_stream(dir, _options, _extension) {
   }
 }
 
-function just_name(filename) {
+function justName(filename) {
   return path.basename(filename, path.extname(filename))
 }
