@@ -38,6 +38,8 @@ function jsonStream(dir, _options, _extension) {
     function streamFile(filename) {
       if(path.extname(filename) !== '.json') return next()
 
+      if(options.limit && options.limit < ++count) return end()
+
       if(options.values === false) {
         return fs.stat(path.join(dir, filename), streamKey)
       }
@@ -45,9 +47,11 @@ function jsonStream(dir, _options, _extension) {
       fs.readFile(path.join(dir, filename), streamKeyValue)
 
       function streamKey(err, stats) {
-        if(err || !stats.isFile()) return next()
+        if(err || !stats.isFile()) {
+          --count
 
-        if(options.limit && options.limit < ++count) return end()
+          return next()
+        }
 
         stream.queue(justName(filename))
 
@@ -55,18 +59,20 @@ function jsonStream(dir, _options, _extension) {
       }
 
       function streamKeyValue(err, data) {
-        if(err) return next()
+        if(err) {
+          --count
+
+          return next()
+        }
 
         var result
           , value
 
-        try{
+        try {
           value = JSON.parse('' + data)
         } catch(e) {
           next()
         }
-
-        if(options.limit && options.limit < ++count) return end()
 
         if(options.keys === false) {
           result = value
