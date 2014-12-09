@@ -28,6 +28,7 @@ function jsonStream(dir, _options, _extension) {
     if(options.reverse) files = files.reverse()
 
     if(options.start && options.end && options.end < options.start) {
+      // swap values without introducing a temp var
       options.end = [options.start, options.start = options.end][0]
     }
 
