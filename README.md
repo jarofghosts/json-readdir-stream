@@ -1,7 +1,7 @@
-json-readdir-stream
-====
+# json-readdir-stream
 
-[![Build Status](https://travis-ci.org/jarofghosts/json-readdir-stream.svg)](https://travis-ci.org/jarofghosts/json-readdir-stream)
+[![Build Status](http://img.shields.io/travis/jarofghosts/json-readdir-stream.svg?style=flat)](https://travis-ci.org/jarofghosts/json-readdir-stream)
+[![npm install](http://img.shields.io/npm/dm/json-readdir-stream.svg?style=flat)](https://www.npmjs.org/package/json-readdir-stream)
 
 like [levelup's `createReadStream()`](https://github.com/rvagg/node-levelup#createReadStream)
 for a directory of JSON files
