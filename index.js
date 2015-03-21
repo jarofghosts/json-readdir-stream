@@ -1,20 +1,23 @@
 var path = require('path')
   , fs = require('fs')
 
-var through = require('through')
+var through = require('through2')
 
 module.exports = jsonStream
 
 function jsonStream(dir, _options, _extension) {
   var extension = _extension || '.json'
     , options = _options || {}
-    , stream = through()
+    , stream = through.obj()
     , count = 0
-    , read
 
-  if(options.limit === 0) return stream.queue(null)
+  if(options.limit === 0) {
+    return stream.push(null)
+  }
 
-  if(options.limit < 0) options.limit = 0
+  if(options.limit < 0) {
+    options.limit = 0
+  }
 
   dir = path.normalize(dir)
 
@@ -23,23 +26,35 @@ function jsonStream(dir, _options, _extension) {
   return stream
 
   function parseFiles(err, files) {
+    if(err) {
+      return stream.emit('error', err)
+    }
+
     files = files.sort()
 
-    if(options.reverse) files = files.reverse()
+    if(options.reverse) {
+      files = files.reverse()
+    }
 
     if(options.start && options.end && options.end < options.start) {
-      // swap values without introducing a temp var
+      // swap values without introducing a temp var, i hate myself
       options.end = [options.start, options.start = options.end][0]
     }
 
-    if(options.start || options.end) files = files.filter(filterStartEnd)
+    if(options.start || options.end) {
+      files = files.filter(filterStartEnd)
+    }
 
     next()
 
     function streamFile(filename) {
-      if(path.extname(filename) !== '.json') return next()
+      if(path.extname(filename) !== '.json') {
+        return next()
+      }
 
-      if(options.limit && options.limit < ++count) return end()
+      if(options.limit && options.limit < ++count) {
+        return end()
+      }
 
       if(options.values === false) {
         return fs.stat(path.join(dir, filename), streamKey)
@@ -47,20 +62,20 @@ function jsonStream(dir, _options, _extension) {
 
       fs.readFile(path.join(dir, filename), streamKeyValue)
 
-      function streamKey(err, stats) {
-        if(err || !stats.isFile()) {
+      function streamKey(statErr, stats) {
+        if(statErr || !stats.isFile()) {
           --count
 
           return next()
         }
 
-        stream.queue(justName(filename))
+        stream.push(justName(filename))
 
         next()
       }
 
-      function streamKeyValue(err, data) {
-        if(err) {
+      function streamKeyValue(fileErr, data) {
+        if(fileErr) {
           --count
 
           return next()
@@ -69,10 +84,10 @@ function jsonStream(dir, _options, _extension) {
         var result
           , value
 
-        try {
-          value = JSON.parse('' + data)
-        } catch(e) {
-          next()
+        value = jsonParse(data)
+
+        if(value === false) {
+          return
         }
 
         if(options.keys === false) {
@@ -84,28 +99,49 @@ function jsonStream(dir, _options, _extension) {
           }
         }
 
-        stream.queue(result)
+        stream.push(result)
 
         next()
       }
     }
 
+    function jsonParse(data) {
+      var obj
+
+      try {
+        obj = JSON.parse(data.toString())
+      } catch(e) {
+        stream.emit('error', e)
+
+        return false
+      }
+
+      return obj
+    }
+
     function next() {
-      if(!files.length) return end()
+      if(!files.length) {
+        return end()
+      }
 
       streamFile(files.shift())
     }
   }
 
   function end() {
-    stream.queue(null)
+    stream.push(null)
   }
 
   function filterStartEnd(el) {
     var compare = path.basename(el, extension)
 
-    if(options.start && options.start > compare) return false
-    if(options.end && options.end < compare) return false
+    if(options.start && options.start > compare) {
+      return false
+    }
+
+    if(options.end && options.end < compare) {
+      return false
+    }
 
     return true
   }
