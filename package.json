@@ -30,10 +30,9 @@
   },
   "homepage": "https://github.com/jarofghosts/json-readdir-stream",
   "dependencies": {
-    "through": "2.3.4",
     "through2": "^0.6.3"
   },
   "devDependencies": {
-    "tape": "2.12.3"
+    "tape": "^3.5.0"
   }
 }
