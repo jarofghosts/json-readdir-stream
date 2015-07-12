@@ -1,7 +1,9 @@
 # json-readdir-stream
 
-[![Build Status](http://img.shields.io/travis/jarofghosts/json-readdir-stream.svg?style=flat)](https://travis-ci.org/jarofghosts/json-readdir-stream)
-[![npm install](http://img.shields.io/npm/dm/json-readdir-stream.svg?style=flat)](https://www.npmjs.org/package/json-readdir-stream)
+[![Build Status](https://img.shields.io/travis/jarofghosts/json-readdir-stream.svg?style=flat-square)](https://travis-ci.org/jarofghosts/json-readdir-stream)
+[![npm install](https://img.shields.io/npm/dm/json-readdir-stream.svg?style=flat-square)](https://www.npmjs.org/package/json-readdir-stream)
+[![npm version](https://img.shields.io/npm/v/json-readdir-stream.svg?style=flat-square)](https://www.npmjs.org/package/json-readdir-stream)
+[![License](https://img.shields.io/npm/l/json-readdir-stream.svg?style=flat-square)](https://github.com/jarofghosts/json-readdir-stream/blob/master/LICENSE)
 
 like [levelup's `createReadStream()`](https://github.com/rvagg/node-levelup#createReadStream)
 for a directory of JSON files
@@ -9,10 +11,13 @@ for a directory of JSON files
 ## example
 
 ```js
+var path = require('path')
+  , fs = require('fs')
+
 var jrs = require('json-readdir-stream')
 
 // takes a directory and an options object, options shown with defaults
-var stream = jrs(__dirname + '/json-files', {
+var stream = jrs(path.join(__dirname, 'json-files'), {
     start: '' // start at the beginning
   , end: '' // ..end at the end
   , reverse: false // stream in alphabetical order
